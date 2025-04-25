@@ -6,11 +6,11 @@ services:
       context: ./frontend
       dockerfile: ${NODE_ENV:-production}.Dockerfile
     ports:
-      - "${HOST_PORT:-80}:80"
+      - "${HOST_PORT:-8080}:80"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
     volumes:
-      - ${NODE_ENV:-production} != production ? ./frontend:/app : /app
+      - ./frontend:/app:delegated
       - /app/node_modules
     depends_on:
       - backend
@@ -25,7 +25,7 @@ services:
       - PYTHONUNBUFFERED=1
       - PYTHONPATH=/app
     volumes:
-      - ./backend:/app
+      - ./backend:/app:delegated
       - /app/__pycache__
     networks:
       - app-network
